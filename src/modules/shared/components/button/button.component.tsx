@@ -1,5 +1,5 @@
 import React from "react";
-import { VoidFunc } from "../../../../types";
+import { NOOP, VoidFunc } from "../../../../types";
 import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
 import { style } from "./button.style";
 
@@ -45,3 +45,10 @@ export function Button(props: ButtonProps) {
         </TouchableOpacity>
     );
 }
+
+Button.defaultProps = {
+    label: "",
+    onClick: NOOP,
+    buttonStyle: {},
+    type: "primary",
+};
