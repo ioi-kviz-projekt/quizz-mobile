@@ -7,7 +7,9 @@ import { ViewSharedProps } from "../types";
 export function createStack(routes: TabRoutes, initialRoute: ViewRoute): () => ReactElement<ViewSharedProps> {
     const Stack = createStackNavigator();
     return () => (
-        <Stack.Navigator initialRouteName={initialRoute}>
+        <Stack.Navigator initialRouteName={initialRoute} screenOptions={{
+            headerShown: false,
+        }}>
             {Object.keys(routes).map((key) => (
                 <Stack.Screen name={key} key={key} component={(routes as any)[key].component} />
             ))}

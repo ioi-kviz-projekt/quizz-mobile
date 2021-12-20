@@ -8,8 +8,12 @@ export function HomeView() {
     
     return (
         <View>
-            <Text>Home</Text>
-            <Text style={{color: "black"}}>{JSON.stringify(keycloak!.refreshTokenParsed)}</Text>
+            <View>
+                <Text style={{color: "black"}}>Home title</Text>
+            </View>
+            <View>
+                <Text style={{color: "black"}}>{JSON.stringify(keycloak!.refreshTokenParsed)}</Text>
+            </View>
         </View>
     );
 }

@@ -17,7 +17,13 @@ export function QuizzAppRouter() {
     
     return (
         <NavigationContainer>
-            <Tab.Navigator backBehavior="history">
+            <Tab.Navigator backBehavior="history" screenOptions={{
+                tabBarShowLabel: false,
+                headerShown: false,
+                tabBarStyle: {
+                    display: "none",
+                },
+            }}>
                 {Object.keys(appRoutes)
                     .filter(routeGuard(keycloak?.authenticated ?? false))
                     .map((key) => (
