@@ -5,19 +5,19 @@ import { tabs } from "./tab.definitions";
 
 export const appRoutes: AppRoutes = {
     [TabRoute.ANONYMOUS]: {
-        tabStack: createStack(tabs.anonymous, ViewRoute.LANDING),
+        tabStack: createStack(tabs.anonymousTab, ViewRoute.LANDING),
         requireAuth: false,
     },
     [TabRoute.HOME]: {
-        tabStack: createStack(tabs.home, ViewRoute.HOME),
+        tabStack: createStack(tabs.homeTab, ViewRoute.HOME),
         requireAuth: true,
     },
     [TabRoute.DISCOVERY]: {
-        tabStack: createStack(tabs.discovery, ViewRoute.PROGRESS),
+        tabStack: createStack(tabs.discoveryTab, ViewRoute.PROGRESS),
         requireAuth: true,
     },
     [TabRoute.QUIZ]: {
-        tabStack: createStack(tabs.quiz, ViewRoute.LOBBY),
+        tabStack: createStack(tabs.quizTab, ViewRoute.LOBBY),
         requireAuth: true,
     },
 };

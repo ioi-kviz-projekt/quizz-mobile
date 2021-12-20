@@ -1,9 +1,9 @@
 
 export enum TabRoute {
-    ANONYMOUS = "anonymous",
-    HOME = "home",
-    DISCOVERY = "discovery",
-    QUIZ = "quiz",
+    ANONYMOUS = "anonymousTab",
+    HOME = "homeTab",
+    DISCOVERY = "discoveryTab",
+    QUIZ = "quizTab",
 }
 
 export enum ViewRoute {
