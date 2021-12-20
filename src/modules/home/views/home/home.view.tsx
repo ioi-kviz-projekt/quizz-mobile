@@ -1,10 +1,14 @@
 import React from "react";
-import { ExpandableButton, Layout, PaddedView, TitleArea } from "../../../shared";
-import { useUserInfo } from "../../../../utils";
+import { Button, ExpandableButton, Layout, PaddedView, TitleArea } from "../../../shared";
+import { useFlag, useLogout, useUserInfo } from "../../../../utils";
 import { style } from "./home.style";
+import { Popup } from "../../../shared/components/popup";
+import { Text, View } from "react-native";
 
 export function HomeView() {
     const user = useUserInfo();
+    const logout = useLogout();
+    const [logoutPromptShown, showLogoutPrompt, hideLogoutPrompt] = useFlag(false);
     
     return (
         <Layout>
@@ -25,8 +29,28 @@ export function HomeView() {
                     onClick={() => {
                     
                     }} />
+                
+                <Button
+                    label="Odjava"
+                    buttonStyle={style.logoutButton}
+                    onClick={() => {
+                        showLogoutPrompt();
+                    }} />
             
             </PaddedView>
+            
+            
+            <Popup visible={logoutPromptShown} onClose={() => {
+                hideLogoutPrompt();
+            }}>
+                <View>
+                    <Text>Are you sure you want to log out?</Text>
+                    <Button label="Logout" onClick={() => {
+                        hideLogoutPrompt();
+                        logout();
+                    }}/>
+                </View>
+            </Popup>
         </Layout>
     );
 }

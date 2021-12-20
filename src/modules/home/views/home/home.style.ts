@@ -6,8 +6,12 @@ export const style = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        height: "100%",
     },
     firstButton: {
         marginBottom: 50,
+    },
+    logoutButton: {
+        marginTop: 50,
     },
 });
