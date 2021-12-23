@@ -1,14 +1,15 @@
 import React from "react";
 import { Button, ExpandableButton, Layout, PaddedView, TitleArea } from "../../../shared";
-import { useFlag, useLogout, useUserInfo } from "../../../../utils";
+import { useFlag, useLogout } from "../../../../utils";
 import { style } from "./home.style";
 import { Popup } from "../../../shared/components/popup";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { useCustomBackNav } from "../../../../utils/hooks";
+import { useStudentContext } from "../../../../context";
 
 export function HomeView() {
-    const user = useUserInfo();
     const logout = useLogout();
+    const { context } = useStudentContext();
     const [logoutPromptShown, showLogoutPrompt, hideLogoutPrompt] = useFlag(false);
     
     useCustomBackNav(() => {
@@ -17,7 +18,7 @@ export function HomeView() {
     
     return (
         <Layout>
-            <TitleArea title={"Pozdravljen, " + user.username + "!"} />
+            <TitleArea title={"Pozdravljen, " + context.student?.fullName + "!"} />
             <PaddedView containerStyle={style.content}>
                 
                 <ExpandableButton

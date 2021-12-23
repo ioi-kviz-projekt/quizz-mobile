@@ -1,7 +1,7 @@
 import { useLayoutEffect, useReducer, useState } from "react";
-import { take } from "rxjs";
+import { switchMap, take } from "rxjs";
 import { useNavigation } from "@react-navigation/native";
-import { CheckUserResponse, Room, RoomRegistrationRequest } from "@quizz-service/quizz-lib-v1";
+import { CheckUserResponse, Room, RoomRegistrationRequest, Student } from "@quizz-service/quizz-lib-v1";
 import {
     LandingViewFormState,
     LandingViewStateActionType,
@@ -12,8 +12,7 @@ import { BaseError } from "../../../../types";
 import { TabRoute, ViewRoute } from "../../../../routes";
 import { useRoomContext, useStudentContext } from "../../../../context";
 import { ServicesFactory, StudentService, RoomService } from "../../../../services";
-
-// TODO: add user context when user if first registered
+import { map } from "rxjs/operators";
 
 export function useLandingViewController() {
     const { navigate } = useNavigation();
@@ -98,11 +97,23 @@ export function useLandingViewController() {
             };
             
             ServicesFactory.get(RoomService).joinRoom(request)
-                .pipe(take(1))
+                .pipe(
+                    switchMap((room: Room) => {
+                        return ServicesFactory.get(StudentService).getStudentInfo().pipe(
+                            map((student: Student) => {
+                                return {
+                                    room: room,
+                                    student: student,
+                                };
+                            }),
+                        );
+                    }),
+                    take(1),
+                )
                 .subscribe({
-                    next: (room: Room) => {
-                        console.log("Joined room with id ", room.roomNumber);
-                        setContext(room);
+                    next: (res) => {
+                        setContext(res.room);
+                        setUserContext(res.student);
                         // @ts-ignore
                         navigate(TabRoute.HOME, { screen: ViewRoute.HOME });
                     },

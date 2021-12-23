@@ -69,12 +69,12 @@ export class HttpClient {
     }
     
     private registerResponseInterceptors(options?: HttpClientOptions): void {
+        if (options && options.logging && options.logging.response && options.logging.response.summary) {
+            this.http.interceptors.response.use(ResponseSummaryLogger);
+        }
         // If enabled, register response body logging
         if (options && options.logging && options.logging.response && options.logging.response.body) {
             this.http.interceptors.response.use(ResponseBodyLogger);
-        }
-        if (options && options.logging && options.logging.response && options.logging.response.summary) {
-            this.http.interceptors.response.use(ResponseSummaryLogger);
         }
     }
     
