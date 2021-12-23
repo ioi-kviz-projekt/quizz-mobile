@@ -4,11 +4,16 @@ import { useFlag, useLogout, useUserInfo } from "../../../../utils";
 import { style } from "./home.style";
 import { Popup } from "../../../shared/components/popup";
 import { Text, View } from "react-native";
+import { useCustomBackNav } from "../../../../utils/hooks";
 
 export function HomeView() {
     const user = useUserInfo();
     const logout = useLogout();
     const [logoutPromptShown, showLogoutPrompt, hideLogoutPrompt] = useFlag(false);
+    
+    useCustomBackNav(() => {
+        return true;
+    });
     
     return (
         <Layout>
@@ -31,7 +36,7 @@ export function HomeView() {
                     }} />
                 
                 <Button
-                    label="Odjava"
+                    label="Zapusti sobo"
                     buttonStyle={style.logoutButton}
                     onClick={() => {
                         showLogoutPrompt();
@@ -42,14 +47,12 @@ export function HomeView() {
             
             <Popup visible={logoutPromptShown} onClose={() => {
                 hideLogoutPrompt();
-            }}>
-                <View>
-                    <Text>Are you sure you want to log out?</Text>
-                    <Button label="Logout" onClick={() => {
-                        hideLogoutPrompt();
-                        logout();
-                    }}/>
-                </View>
+            }} contentStyle={style.popupContent}>
+                <Text style={style.popupText}>Ali res želite zapustiti sobo?</Text>
+                <Button label="Zapusti" onClick={() => {
+                    hideLogoutPrompt();
+                    logout();
+                }} />
             </Popup>
         </Layout>
     );

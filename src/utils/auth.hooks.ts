@@ -1,11 +1,13 @@
-import { useKeycloak } from "@react-keycloak/native";
-import { AuthProvider } from "../providers";
+import { useRoomContext } from "../context";
 
 export function useLogout() {
-    const { keycloak } = useKeycloak();
-    return () => {
+    const { clearContext } = useRoomContext();
+    /*return () => {
         AuthProvider.getInstance().clearTokens().finally(() => {
             keycloak!.logout();
         });
+    };*/
+    return () => {
+        clearContext();
     };
 }

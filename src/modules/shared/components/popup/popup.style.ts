@@ -4,14 +4,14 @@ import { Color } from "../../../../styles";
 export const style = StyleSheet.create({
     overlay: {
         width: "80%",
-        borderRadius: 12,
         padding: 0,
+        borderRadius: 25,
     },
     container: {
-        /*borderTopLeftRadius: 12,
-        borderTopRightRadius: 12,*/
         backgroundColor: Color.WHITE,
-        padding: 20,
+        borderRadius: 25,
+        paddingHorizontal: 15,
+        paddingVertical: 20,
     },
     actionsContainer: {
         display: "flex",
@@ -19,7 +19,7 @@ export const style = StyleSheet.create({
         justifyContent: "flex-end",
     },
     cancelActionContainer: {
-        padding: 10,
+        padding: 8,
     },
     contentContainer: {
         display: "flex",

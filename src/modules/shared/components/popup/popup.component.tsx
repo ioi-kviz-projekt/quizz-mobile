@@ -10,20 +10,21 @@ interface PopupProps {
     onClose: VoidFunc;
     children: ReactElement | ReactElement[];
     containerStyle: StyleProp<ViewStyle>;
+    contentStyle: StyleProp<ViewStyle>;
 }
 
 export function Popup(props: PopupProps) {
-    const { visible, onClose, children } = props;
+    const { visible, onClose, children, contentStyle } = props;
     
     return (
         <Overlay isVisible={visible} onBackdropPress={onClose} overlayStyle={style.overlay}>
             <View style={style.container}>
                 <View style={style.actionsContainer}>
                     <TouchableOpacity onPress={onClose} style={style.cancelActionContainer}>
-                        <Image source={timesIcon} width={15} height={15}/>
+                        <Image source={timesIcon} width={15} height={15} />
                     </TouchableOpacity>
                 </View>
-                <View style={style.contentContainer}>
+                <View style={[style.contentContainer, contentStyle]}>
                     {children}
                 </View>
             </View>
@@ -36,4 +37,5 @@ Popup.defaultProps = {
     onClose: NOOP,
     children: <></>,
     containerStyle: EMPTY_STYLE,
+    contentStyle: EMPTY_STYLE,
 };

@@ -1,15 +1,17 @@
-import { useKeycloak } from "@react-keycloak/native";
 import { User, VoidFunc } from "../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TabRoute, ViewRoute } from "../routes";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { BackHandler } from "react-native";
 
 export function useUserInfo(): User {
-    const { keycloak } = useKeycloak();
+    /*const { keycloak } = useKeycloak();
     
-    const userInfo = keycloak!.idTokenParsed as any;
+    const userInfo = keycloak!.idTokenParsed as any;*/
     
     return {
-        userId: userInfo.sub,
-        username: userInfo.preferred_username,
+        userId: "userId",
+        username: "username",
     };
 }
 
@@ -25,4 +27,45 @@ export function useFlag(initialValue: boolean = false): [boolean, VoidFunc, Void
             flagSetter(false);
         },
     ];
+}
+
+export function useBackHandler(): (tabName?: TabRoute, screen?: ViewRoute) => void {
+    const navigation = useNavigation();
+    return (tabName?: TabRoute, screen?: ViewRoute) => {
+        if (navigation.canGoBack()) {
+            navigation.goBack();
+        } else {
+            if (!tabName) {
+                tabName = TabRoute.HOME;
+            }
+            let initialRoute = {
+                name: tabName,
+            };
+            if (!screen) {
+                (initialRoute as any).screen = screen;
+            }
+            navigation.dispatch(CommonActions.reset({
+                index: 0,
+                routes: [initialRoute],
+            }));
+        }
+    };
+}
+
+export function useCustomBackNav(newFunc?: () => boolean) {
+    const defaultBackHandler = useBackHandler();
+    
+    const defaultFunc = () => {
+        defaultBackHandler();
+        return true;
+    };
+    
+    const handlerFunc: () => boolean = newFunc || defaultFunc;
+    
+    useEffect(() => {
+        BackHandler.addEventListener("hardwareBackPress", handlerFunc);
+        return () => {
+            BackHandler.removeEventListener("hardwareBackPress", handlerFunc);
+        };
+    }, []);
 }

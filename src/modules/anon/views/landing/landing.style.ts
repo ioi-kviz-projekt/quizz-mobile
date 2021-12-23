@@ -15,10 +15,19 @@ export const style = StyleSheet.create({
         flexDirection: "column",
     },
     header: {
-        marginTop: 120,
-        marginBottom: 150,
+        marginTop: 80,
+        marginBottom: 60,
         display: "flex",
         justifyContent: "center",
         flexDirection: "row",
+    },
+    firstInput: {
+        marginTop: 20,
+    },
+    secondInput: {
+        marginTop: 60,
+    },
+    button: {
+        marginTop: 80,
     },
 });
