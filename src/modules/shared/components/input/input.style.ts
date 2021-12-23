@@ -14,10 +14,11 @@ export const style = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: Color.WHITE,
         height: 60,
-        fontSize: 16,
+        fontSize: 18,
         color: Color.BLACK,
         width: "100%",
         display: "flex",
+        paddingHorizontal: 20,
     },
     invalidInput: {
         ...border(2, Color.RED),

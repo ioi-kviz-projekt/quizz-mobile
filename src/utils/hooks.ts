@@ -2,7 +2,7 @@ import { User, VoidFunc } from "../types";
 import { useEffect, useState } from "react";
 import { TabRoute, ViewRoute } from "../routes";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { BackHandler } from "react-native";
+import { BackHandler, StyleProp, useWindowDimensions, ViewStyle } from "react-native";
 
 export function useUserInfo(): User {
     /*const { keycloak } = useKeycloak();
@@ -68,4 +68,29 @@ export function useCustomBackNav(newFunc?: () => boolean) {
             BackHandler.removeEventListener("hardwareBackPress", handlerFunc);
         };
     }, []);
+}
+
+export function useDimensionalStyles() {
+    const { height, width } = useWindowDimensions();
+    
+    const heightStyle: StyleProp<ViewStyle> = {
+        height: height,
+    };
+    
+    const widthStyle: StyleProp<ViewStyle> = {
+        width: width,
+    };
+    
+    const dimensionalStyle: StyleProp<ViewStyle> = {
+        width: width,
+        height: height,
+    };
+    
+    return {
+        width,
+        height,
+        widthStyle,
+        heightStyle,
+        dimensionalStyle,
+    };
 }

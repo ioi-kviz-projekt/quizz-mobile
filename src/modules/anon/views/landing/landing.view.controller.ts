@@ -15,7 +15,7 @@ import { ServicesFactory, StudentService, RoomService } from "../../../../servic
 import { map } from "rxjs/operators";
 
 export function useLandingViewController() {
-    const { navigate } = useNavigation();
+    const { navigate } = useNavigation<any>();
     const { setContext } = useRoomContext();
     const { setContext: setUserContext } = useStudentContext();
     const [state, dispatcher] = useReducer(LandingViewStateReducer, {
@@ -114,7 +114,6 @@ export function useLandingViewController() {
                     next: (res) => {
                         setContext(res.room);
                         setUserContext(res.student);
-                        // @ts-ignore
                         navigate(TabRoute.HOME, { screen: ViewRoute.HOME });
                     },
                     error: (err: BaseError) => {
