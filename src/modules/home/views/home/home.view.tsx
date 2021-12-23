@@ -1,13 +1,14 @@
 import React from "react";
-import { Button, ExpandableButton, Layout, PaddedView, TitleArea } from "../../../shared";
-import { useFlag, useLogout, useDimensionalStyles, useCustomBackNav } from "../../../../utils";
-import { style } from "./home.style";
-import { Popup } from "../../../shared/components/popup";
 import { ImageBackground, Text } from "react-native";
-import pivkaBg from "../../../../media/images/bg_pivka.png";
-import { useStudentContext } from "../../../../context";
 import { useNavigation } from "@react-navigation/native";
+
+import { Button, ExpandableButton, Layout, PaddedView, TitleArea, Popup } from "../../../shared";
+import { useFlag, useLogout, useDimensionalStyles, useCustomBackNav } from "../../../../utils";
+import { useStudentContext } from "../../../../context";
 import { TabRoute, ViewRoute } from "../../../../routes";
+
+import { style } from "./home.style";
+import pivkaBg from "../../../../media/images/bg_pivka.png";
 
 export function HomeView() {
     const logout = useLogout();

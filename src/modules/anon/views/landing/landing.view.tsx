@@ -1,13 +1,14 @@
 import React from "react";
 import { Image, ImageBackground, Text, View } from "react-native";
-import { Button, Layout, PaddedView } from "../../../shared";
+
+import { Button, Layout, PaddedView, Input } from "../../../shared";
+import { useDimensionalStyles } from "../../../../utils";
+
+import { useLandingViewController } from "./landing.view.controller";
+import { LandingStatus } from "./landing.view.state";
 import pivkaLogo from "../../../../media/images/pivka_logo.png";
 import pivkaBg from "../../../../media/images/bg_pivka.png";
 import { style } from "./landing.style";
-import { useLandingViewController } from "./landing.view.controller";
-import { Input } from "../../../shared/components/input";
-import { LandingStatus } from "./landing.view.state";
-import { useDimensionalStyles } from "../../../../utils";
 
 export function LandingView() {
     const { state, formState, onRoomNumberInput, onNameInput, joinRoom } = useLandingViewController();

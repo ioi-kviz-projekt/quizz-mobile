@@ -1,11 +1,21 @@
 import React from "react";
-import { useProgressViewController } from "./progress.controller";
+
 import { Layout, PaddedView, TitleArea } from "../../../shared";
+import { useBackHandler, useCustomBackNav } from "../../../../utils";
+import { TabRoute, ViewRoute } from "../../../../routes";
+
+import { useProgressViewController } from "./progress.controller";
 import { ProgressStep } from "../../components";
 import { style } from "./progress.style";
 
 export function ProgressView() {
     const themes = useProgressViewController();
+    
+    const back = useBackHandler();
+    useCustomBackNav(() => {
+        back(TabRoute.HOME, ViewRoute.HOME);
+        return true;
+    });
     
     return (
         <Layout>
