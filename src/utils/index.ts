@@ -4,6 +4,7 @@ export {
     useDimensionalStyles,
     useCustomBackNav,
     useBackHandler,
+    useLocationPermissions,
 } from "./hooks";
 
 export {

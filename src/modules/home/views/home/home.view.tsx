@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ImageBackground, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import { Button, ExpandableButton, Layout, PaddedView, TitleArea, Popup } from "../../../shared";
-import { useFlag, useLogout, useDimensionalStyles, useCustomBackNav } from "../../../../utils";
+import { useFlag, useLogout, useDimensionalStyles, useCustomBackNav, useLocationPermissions } from "../../../../utils";
 import { useStudentContext } from "../../../../context";
 import { TabRoute, ViewRoute } from "../../../../routes";
 
@@ -17,9 +17,22 @@ export function HomeView() {
     const [logoutPromptShown, showLogoutPrompt, hideLogoutPrompt] = useFlag(false);
     const { heightStyle, width, height } = useDimensionalStyles();
     
+    const requestLocation = useLocationPermissions();
+    
     useCustomBackNav(() => {
         return true;
     });
+    
+    async function checkLocationPermissions() {
+        const hasPermissions = await requestLocation();
+        if (!hasPermissions) {
+            console.error("No location permission granted!");
+        }
+    }
+    
+    useEffect(() => {
+        checkLocationPermissions();
+    }, []);
     
     return (
         <Layout>

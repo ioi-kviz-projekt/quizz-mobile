@@ -1,3 +1,4 @@
 export interface QuizzAppEnvironment {
-    quizzServiceUrl: string,
+    quizzServiceUrl: string;
+    discoveryWSUrl: string;
 }

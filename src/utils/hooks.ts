@@ -2,7 +2,7 @@ import { User, VoidFunc } from "../types";
 import { useEffect, useState } from "react";
 import { TabRoute, ViewRoute } from "../routes";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { BackHandler, StyleProp, useWindowDimensions, ViewStyle } from "react-native";
+import { BackHandler, PermissionsAndroid, Platform, StyleProp, useWindowDimensions, ViewStyle } from "react-native";
 
 export function useUserInfo(): User {
     /*const { keycloak } = useKeycloak();
@@ -93,4 +93,20 @@ export function useDimensionalStyles() {
         heightStyle,
         dimensionalStyle,
     };
+}
+
+export function useLocationPermissions() {
+    return async () => {
+        if (Platform.OS === "android") {
+            const hasPermission = await PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+            if (!hasPermission) {
+                const status = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+                return status === PermissionsAndroid.RESULTS.GRANTED;
+            }
+            return true;
+        }
+        return true;
+    };
+    
+    
 }

@@ -1,11 +1,13 @@
 import React from "react";
 
 import { style } from "./progress-step.style";
-import { StyleProp, Text, View, ViewStyle } from "react-native";
+import { StyleProp, Text, TouchableOpacity, View, ViewStyle } from "react-native";
+import { NOOP, VoidFunc } from "../../../../types";
 
 interface ProgressStepProps {
     label: string;
     shown: boolean;
+    onClick: VoidFunc;
 }
 
 function determineBarStyle(shown: boolean): StyleProp<ViewStyle>[] {
@@ -41,7 +43,7 @@ function determineLabelStyle(shown: boolean): StyleProp<ViewStyle>[] {
 }
 
 export function ProgressStep(props: ProgressStepProps) {
-    const { shown, label } = props;
+    const { shown, label, onClick } = props;
     
     return (
         <View>
@@ -53,13 +55,19 @@ export function ProgressStep(props: ProgressStepProps) {
                     <View style={determinePointStyle(shown)}/>
                 </View>
                 <View>
-                    <View style={determineLabelStyle(shown)}>
-                        {shown && (
+                    {shown ? (
+                        <TouchableOpacity style={style.label} onPress={onClick}>
                             <Text style={style.labelText}>{label}</Text>
-                        )}
-                    </View>
+                        </TouchableOpacity>
+                    ) : (
+                        <View style={determineLabelStyle(shown)}/>
+                    )}
                 </View>
             </View>
         </View>
     );
 }
+
+ProgressStep.defaultProps = {
+    onClick: NOOP,
+};

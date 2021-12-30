@@ -32,14 +32,14 @@ export function LandingView() {
                                 label="Številka sobe:"
                                 containerStyle={style.firstInput}
                                 invalid={!!formState.errors?.roomNumber}
-                                onChange={newNumber => onRoomNumberInput(newNumber)} />
+                                onInput={newNumber => onRoomNumberInput(newNumber)} />
                             
                             {state.status === LandingStatus.NO_USER && (
                                 <Input initialValue={formState.fields.fullName}
                                     label="Ime in priimek:"
                                     containerStyle={style.secondInput}
                                     invalid={!!formState.errors?.fullName}
-                                    onChange={name => onNameInput(name)} />
+                                    onInput={name => onNameInput(name)} />
                             )}
                             
                             <Button label="Vstopi" onClick={() => {

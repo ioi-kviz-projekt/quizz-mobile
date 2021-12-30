@@ -1,11 +1,11 @@
 import React from "react";
-import { StyleProp, Text, TextInput, TextStyle, View, ViewStyle } from "react-native";
+import { StyleProp, Text, TextInput, TextInputProps, TextStyle, View, ViewStyle } from "react-native";
 import { EMPTY_STYLE, NOOP } from "../../../../types";
 import { style } from "./input.style";
 
-interface InputProps {
+interface InputProps extends TextInputProps {
     initialValue: string,
-    onChange: (change: string) => void;
+    onInput: (change: string) => void;
     size: number;
     containerStyle: StyleProp<ViewStyle>;
     inputStyle: StyleProp<TextStyle>;
@@ -22,7 +22,7 @@ function evalStyle(props: InputProps): StyleProp<TextStyle>[] {
 }
 
 export function Input(props: InputProps) {
-    const { initialValue, onChange, containerStyle, label, error, invalid } = props;
+    const { initialValue, onInput, containerStyle, label, error, invalid } = props;
     
     return (
         <View style={[style.container, containerStyle]}>
@@ -30,9 +30,13 @@ export function Input(props: InputProps) {
                 <Text style={style.label}>{label}</Text>
             </View>
             <View style={style.itemContainer}>
-                <TextInput onChangeText={onChange}
+                <TextInput
                     style={evalStyle(props)}
                     value={initialValue}
+                    onChangeText={text => {
+                        onInput(text);
+                    }}
+                    {...props}
                 />
             </View>
             {(error && invalid) && (
@@ -48,7 +52,7 @@ Input.defaultProps = {
     size: 5,
     containerStyle: EMPTY_STYLE,
     inputStyle: EMPTY_STYLE,
-    onChange: NOOP,
+    onInput: NOOP,
     initialValue: "",
     invalid: false,
     label: "",
