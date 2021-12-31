@@ -4,15 +4,15 @@ import { webSocket } from "rxjs/webSocket";
 import { environment } from "../environment";
 
 
-export class DiscoveryService {
+export class DiscoveryWsService {
     
-    private static INSTANCE: DiscoveryService | null = null;
+    private static INSTANCE: DiscoveryWsService | null = null;
     
-    public static getInstance(): DiscoveryService {
-        if (DiscoveryService.INSTANCE === null) {
-            DiscoveryService.INSTANCE = new DiscoveryService();
+    public static getInstance(): DiscoveryWsService {
+        if (DiscoveryWsService.INSTANCE === null) {
+            DiscoveryWsService.INSTANCE = new DiscoveryWsService();
         }
-        return DiscoveryService.INSTANCE;
+        return DiscoveryWsService.INSTANCE;
     }
     
     private ws$: Subject<SocketMessage>;

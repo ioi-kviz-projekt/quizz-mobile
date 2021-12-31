@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DiscoveryService, ServicesFactory, ThemeService } from "../../../../services";
+import { DiscoveryWsService, ServicesFactory, ThemeService } from "../../../../services";
 import { Subject, take, takeUntil } from "rxjs";
 import { DiscoverableTheme, SocketMessage } from "@quizz-service/quizz-lib-v1";
 import Geolocation from "react-native-geolocation-service";
@@ -41,17 +41,17 @@ export function useProgressViewController() {
     useEffect(() => {
         const destroy$ = new Subject<boolean>();
         
-        DiscoveryService.getInstance().connect().pipe(
+        DiscoveryWsService.getInstance().connect().pipe(
             take(1),
         ).subscribe(() => {
             const message: SocketMessage = {
                 type: "REGISTRATION",
                 accessToken: getUniqueId(),
             };
-            DiscoveryService.getInstance().sendMessage(message);
+            DiscoveryWsService.getInstance().sendMessage(message);
         });
         
-        DiscoveryService.getInstance().listen()
+        DiscoveryWsService.getInstance().listen()
             .pipe(takeUntil(destroy$))
             .subscribe({
                 next: msg => {
