@@ -10,6 +10,7 @@ import { useProgressViewController } from "./progress.controller";
 import { ProgressStep } from "../../components";
 import { style } from "./progress.style";
 import { DiscoveryContext, DiscoveryContextProvider } from "../../../../context";
+import { QuestionCreator } from "../../components/question-creator/question-creator.component";
 
 
 export function ProgressView() {
@@ -44,30 +45,7 @@ export function ProgressView() {
                                 </PaddedView>
                             </>
                         ) : (
-                            <>
-                                <TitleArea title={"Napiši dve vprašanji na izbrano temo."} textStyle={style.titleText} />
-                                <PaddedView padding={40} containerStyle={style.container}>
-                                    <Input numberOfLines={5}
-                                        containerStyle={[style.input, style.firstInput]}
-                                        style={style.inputInner}
-                                        value={""}
-                                        label="Vprašanje 1"
-                                        onInput={text => {
-                                        
-                                        }}
-                                    />
-    
-                                    <Input numberOfLines={5}
-                                        containerStyle={style.input}
-                                        style={style.inputInner}
-                                        value={""}
-                                        label="Vprašanje 2"
-                                        onInput={text => {
-            
-                                        }}
-                                    />
-                                </PaddedView>
-                            </>
+                            <QuestionCreator theme={context.state.theme} />
                         )
                     
                     )}

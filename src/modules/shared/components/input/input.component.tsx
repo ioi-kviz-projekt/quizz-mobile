@@ -10,7 +10,7 @@ interface InputProps extends TextInputProps {
     containerStyle: StyleProp<ViewStyle>;
     inputStyle: StyleProp<TextStyle>;
     invalid: boolean;
-    label: string;
+    label?: string;
     error?: string;
 }
 
@@ -26,9 +26,11 @@ export function Input(props: InputProps) {
     
     return (
         <View style={[style.container, containerStyle]}>
-            <View style={style.itemContainer}>
-                <Text style={style.label}>{label}</Text>
-            </View>
+            {label && (
+                <View style={style.itemContainer}>
+                    <Text style={style.label}>{label}</Text>
+                </View>
+            )}
             <View style={style.itemContainer}>
                 <TextInput
                     style={evalStyle(props)}
@@ -55,5 +57,4 @@ Input.defaultProps = {
     onInput: NOOP,
     initialValue: "",
     invalid: false,
-    label: "",
 };

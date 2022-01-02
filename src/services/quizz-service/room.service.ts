@@ -1,6 +1,6 @@
 import { QuizzAbstractService } from "./quizz.abstract-service";
 import { Observable } from "rxjs";
-import { QuizInstance, Room, RoomRegistrationRequest } from "@quizz-service/quizz-lib-v1";
+import { ActiveQuizState, QuizInstance, Room, RoomRegistrationRequest } from "@quizz-service/quizz-lib-v1";
 import { catchAxiosError, getBody, mapToType } from "../../utils";
 import { AxiosResponse } from "axios";
 
@@ -14,9 +14,9 @@ export class RoomService extends QuizzAbstractService {
         );
     }
     
-    public getActiveQuiz(roomId: string): Observable<QuizInstance> {
+    public getActiveQuizState(roomId: string): Observable<ActiveQuizState> {
         return this.http.get(`/quizzes/${roomId}/active`).pipe(
-            mapToType<AxiosResponse<QuizInstance>>(),
+            mapToType<AxiosResponse<ActiveQuizState>>(),
             getBody(),
             catchAxiosError(),
         );

@@ -38,4 +38,10 @@ export abstract class WebsocketService {
         return this.ws$.asObservable();
     }
     
+    public close(): void {
+        if (!this.ws$.closed) {
+            this.ws$.unsubscribe();
+        }
+    }
+    
 }

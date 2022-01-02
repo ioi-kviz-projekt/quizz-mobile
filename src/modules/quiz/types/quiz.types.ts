@@ -3,7 +3,7 @@ import { QuestionAnswer, ThemeQuestion } from "@quizz-service/quizz-lib-v1";
 
 export enum QuizActionType {
     ERRORED = "quiz/errored",
-    // CONNECT = "quiz/connect",
+    CONNECT = "quiz/connect",
     QUIZ_STARTED = "quiz/quiz-started",
     QUESTION_LOADED = "quiz/question-loaded",
     QUESTION_ANSWERED = "quiz/question-answered",
@@ -13,11 +13,12 @@ export enum QuizActionType {
 
 export type QuizStateAction =
     { type: QuizActionType.ERRORED, error: BaseError | Error }
+    | { type: QuizActionType.CONNECT }
     | { type: QuizActionType.QUIZ_STARTED, endsAt: Date }
     | { type: QuizActionType.QUESTION_LOADED, endsAt: Date, question: ThemeQuestion, answers: QuestionAnswer[] }
     | { type: QuizActionType.QUESTION_ANSWERED, answerId: string }
     | { type: QuizActionType.QUESTION_TIMEOUT, endsAt: Date }
-    | { type: QuizActionType.QUIZ_FINISHED };
+    | { type: QuizActionType.QUIZ_FINISHED, quizId: string };
 
 export enum QuizStateStatus {
     ERROR = "error",
@@ -36,4 +37,4 @@ export type QuizState =
     | { status: QuizStateStatus.LOADING, endsAt: Date }
     | { status: QuizStateStatus.QUESTION, question: ThemeQuestion, answers: QuestionAnswer[], endsAt: Date }
     | { status: QuizStateStatus.ANSWERED, question: ThemeQuestion, answers: QuestionAnswer[], endsAt: Date, answerId: string }
-    | { status: QuizStateStatus.FINISHED };
+    | { status: QuizStateStatus.FINISHED, quizId: string };

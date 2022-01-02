@@ -20,7 +20,6 @@ export class QuizWsService extends WebsocketService {
     }
     
     public connectAndRegister() {
-        console.log(this.connect);
         this.connect().pipe(
             take(1)
         ).subscribe({

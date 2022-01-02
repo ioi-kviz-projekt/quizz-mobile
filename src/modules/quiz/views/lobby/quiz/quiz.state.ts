@@ -1,14 +1,14 @@
 import { Dispatch, useEffect, useReducer } from "react";
 import { Subject, take, takeUntil } from "rxjs";
 import { getUniqueId } from "react-native-device-info";
-import { QuizInstance, SocketMessage, StateChangeResponse } from "@quizz-service/quizz-lib-v1";
+import { ActiveQuizState, SocketMessage, StateChangeResponse } from "@quizz-service/quizz-lib-v1";
 
 import { useRoomContext } from "../../../../../context";
-import { RoomService, ServicesFactory, QuizWsService } from "../../../../../services";
+import { QuizWsService, RoomService, ServicesFactory } from "../../../../../services";
 import { deserializeQuestionResponse, deserializeWithEndDate } from "../../../../../utils";
 
 import { QuizActionType, QuizState, QuizStateAction, QuizStateStatus } from "../../../types";
-import { QuizQuestion } from "../../../components";
+import { BaseError, NotFoundError } from "../../../../../types";
 
 
 export function QuizFlowReducer(previousState: QuizState, action: QuizStateAction): QuizState {
@@ -17,6 +17,10 @@ export function QuizFlowReducer(previousState: QuizState, action: QuizStateActio
             return {
                 status: QuizStateStatus.ERROR,
                 error: action.error,
+            };
+        case QuizActionType.CONNECT:
+            return {
+                status: QuizStateStatus.CONNECTING,
             };
         case QuizActionType.QUIZ_STARTED:
             return {
@@ -49,6 +53,7 @@ export function QuizFlowReducer(previousState: QuizState, action: QuizStateActio
         case QuizActionType.QUIZ_FINISHED:
             return {
                 status: QuizStateStatus.FINISHED,
+                quizId: action.quizId,
             };
         default:
             return previousState;
@@ -82,9 +87,12 @@ function socketMessageHandler(message: SocketMessage, stateDispatcher: Dispatch<
             endsAt: payload.endsAt,
         });
     }
+    
     if (message.type === SocketMessage.Type.FINISHED) {
+        const quizId = message.payload;
         stateDispatcher({
             type: QuizActionType.QUIZ_FINISHED,
+            quizId: quizId!,
         });
     }
     
@@ -99,18 +107,43 @@ export function useQuizFlow() {
     });
     
     useEffect(() => {
-        // retrieve current status about quiz
-        ServicesFactory.get(RoomService).getActiveQuiz(roomContext.room!.id!)
+        // retrieve current status about quiz, to resume if connection lost
+        ServicesFactory.get(RoomService).getActiveQuizState(roomContext.room!.id!)
             .pipe(take(1))
             .subscribe({
-                // TODO: populate quiz instance
-                next: (_: QuizInstance) => {
+                next: (quizInstance: ActiveQuizState) => {
+                    if (quizInstance.state === "QUESTION") {
+                        dispatcher({
+                            type: QuizActionType.QUESTION_LOADED,
+                            question: quizInstance.question,
+                            answers: quizInstance.answers,
+                            endsAt: quizInstance.endsAt,
+                        });
+                    } else if (quizInstance.state === "WAITING") {
+                        dispatcher({
+                            type: QuizActionType.QUIZ_STARTED,
+                            endsAt: quizInstance.endsAt,
+                        });
+                    } else {
+                        dispatcher({
+                            type: QuizActionType.CONNECT,
+                        });
+                    }
+                },
+                error: (err: BaseError) => {
+                    if (!(err instanceof NotFoundError)) {
+                        console.error(err);
+                    }
                 },
             });
     }, []);
     
     useEffect(() => {
         QuizWsService.getInstance().connectAndRegister();
+        
+        return () => {
+            QuizWsService.getInstance().close();
+        };
     }, []);
     
     useEffect(() => {
@@ -121,6 +154,13 @@ export function useQuizFlow() {
             .subscribe({
                 next: message => {
                     socketMessageHandler(message, dispatcher);
+                },
+                error: err => {
+                    console.error(err);
+                    dispatcher({
+                        type: QuizActionType.ERRORED,
+                        error: err,
+                    });
                 },
             });
         

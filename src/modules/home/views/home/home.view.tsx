@@ -45,14 +45,14 @@ export function HomeView() {
                         expandedText="V skupini se sprehodite po razstavi in sestavite naloge za skupinsko igro."
                         containerStyle={style.firstButton}
                         onClick={() => {
-                            navigate(TabRoute.DISCOVERY, { screen: ViewRoute.PROGRESS });
+                            navigate(TabRoute.DISCOVERY, { screen: ViewRoute.PROGRESS, initial: false });
                         }} />
                     
                     <ExpandableButton
                         label="Začni igro"
                         expandedText="Skupaj v razredu rešite naloge, ki ste jih sestavili po skupinah."
                         onClick={() => {
-                            navigate(TabRoute.QUIZ, { screen: ViewRoute.LOBBY });
+                            navigate(TabRoute.QUIZ, { screen: ViewRoute.LOBBY, initial: false });
                         }} />
                     
                     <Button

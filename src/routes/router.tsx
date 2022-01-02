@@ -29,6 +29,7 @@ export function QuizzAppRouter() {
                 tabBarStyle: {
                     display: "none",
                 },
+                unmountOnBlur: true,
             }}>
                 {Object.keys(appRoutes)
                     .filter(route => contextFilter(route, context.room !== null))
